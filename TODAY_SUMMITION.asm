@@ -1,0 +1,66 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+
+NEWLINE DB 0AH,0DH,'$'
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV AH,1
+    INT 21H 
+    MOV AH,0
+    SUB AL,'0'
+    MOV CX,AX
+    MOV SI,1 
+    MOV AL,0
+    SUMMITION:
+        ADD AL,CL
+        INC SI
+        LOOP SUMMITION
+    CALL PRINTAX
+    
+    MOV AH,21H
+    INT 21H
+    
+    MAIN ENDP
+PRINTLINE PROC
+    PUSH DX
+    PUSH AX
+    LEA DX,NEWLINE
+    MOV AH,9
+    INT 21H
+    POP AX
+    POP DX  
+    RET
+    PRINTLINE ENDP
+PRINTAX PROC
+    PUSH DX
+    PUSH AX
+    PUSH BX
+    CALL PRINTLINE
+    MOV AH,0
+    MOV BL,10
+    DIV BL
+    MOV DL,AL 
+    ADD DL,'0'
+    MOV BL,AH
+    MOV AH,2
+    INT 21H
+    MOV DL,BL
+    ADD DL,'0'
+    INT 21H
+    POP BX
+    POP AX
+    POP DX
+    RET
+    PRINTAX ENDP
+END MAIN
+    
+    
+    
+
+    
+    
+        
